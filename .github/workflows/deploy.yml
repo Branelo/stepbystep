@@ -3,7 +3,7 @@ name: Deploy to VPS
 on:
   push:
     branches:
-      - main  # Або master, залежно від того, як називається твоя головна гілка
+      - main
 
 jobs:
   deploy:
@@ -21,4 +21,8 @@ jobs:
           script: |
             cd /stepbystep
             git pull origin main
-            # Тут пізніше додамо команди для перезапуску Node.js
+            npm install
+            # Перезапуск сервера через PM2
+            pm2 delete stepbystep || true
+            pm2 start server.js --name "stepbystep"
+            pm2 save
